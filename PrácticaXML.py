@@ -46,27 +46,21 @@ def leerXml(fichero):
 
 # Metodo que recoge un String y valida tanto la longitud como la presencia de caracteres no deseados
 def validarString(string):
-	flag = False
-	contador = 0
-	y = string.strip() 		# eliminamos los espacios vacios al inicio y final de la cadena
-	while(not flag):		# bucle hasta que la cadena no presente las caracteristicas deseadas
+	y = string.strip()
+	for intento in range(5):
 		if ((len(y) < 1) or (len(y) > 40)):
-			print("\nEntrada invalida: minimo un caracter, maximo 40 caracteres\nPruebe de nuevo:")
-			newStr = str(input())		# en caso de no ser satisfactorio, se pide un nuevo string
-			y = newStr.strip()
-			contador += 1
-			if (contador == 5):			# si fallamos 5 veces en proporcionar una cadena valida, se cancela la operacion
-				print("-" * 20, "Operacion Cancelada", "-" * 20)
-				menu()
+			print("\nEntrada invalida: minimo un caracter, maximo 20 caracteres\nPruebe de nuevo:")
+			y = str(input()).strip()
 		else:
-			flag = True
-	return y		# retornamos el nuevo valor aceptado
+			return y
 
-def validarInteger(x, decimales):
-	flag = False
-	contador = 0
-	if not decimales: 		# condicion para saber si el metodo esta interactuando con 'int' o 'float
-		while(not flag):
+	print("-" * 20, "Operacion Cancelada", "-" * 20)
+	return False
+
+# Método que recoge un String, para eliminar caracteres en blanco, y lo convierte a un Integer (POR DEFECTO SI NO SE ESPECIFICA, ES SIN DECIMALES)
+def validarInteger(x, decimales = False):
+	if not decimales:
+		for intento in range(5):
 			y = x.strip()	# eliminamos los posibles espacios vacios al inicio y final
 			try:
 				z = int(y)	# tratamos de castear el valor proporcionado a la variable 'z'
@@ -74,12 +68,9 @@ def validarInteger(x, decimales):
 			except ValueError:
 				print("\nEntrada no valida: introduzca exclusivamente numeros entre 0 y 9:\n")
 				x = input()	# de no serlo, volvemos a pedir una cifra
-				contador += 1
-				if (contador == 5):	# de fallar 5 veces, cancelamos la operacion
-					print("\nOperacion cancelada\n")
-					break
-	else:	# Misma logica aplicada con variables de tipo float (principalmente para validar precios)
-		while(not flag):
+		print("\nOperacion cancelada\n")
+	else:
+		for intento in range(5):
 			y = x.strip()
 			try:
 				z = float(y)
@@ -87,10 +78,7 @@ def validarInteger(x, decimales):
 			except ValueError:
 				print("\nEntrada no valida: introduzca exclusivamente numeros entre 0 y 9: (en caso de necesitar decimales, recuerde utilizar '.')\n")
 				x = input()
-				contador += 1
-				if (contador == 5):
-					print("\nOperacion cancelada\n")
-					break
+		print("\nOperacion cancelada\n")
 
 # Metodo que recoge una cadena y comprueba que contenga las caracteristicas de un DNI
 def validarDNI(dni):
