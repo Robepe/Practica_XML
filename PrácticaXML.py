@@ -44,6 +44,7 @@ def leerXml(fichero):
 	raiz = arbol.getroot()		
 	return raiz					# ubicamos y devolvemos la raiz de elementos
 
+
 # Metodo que recoge un String y valida tanto la longitud como la presencia de caracteres no deseados
 def validarString(string):
 	y = string.strip()
@@ -56,6 +57,7 @@ def validarString(string):
 
 	print("-" * 20, "Operacion Cancelada", "-" * 20)
 	return False
+
 
 # Método que recoge un String, para eliminar caracteres en blanco, y lo convierte a un Integer (POR DEFECTO SI NO SE ESPECIFICA, ES SIN DECIMALES)
 def validarInteger(x, decimales = False):
@@ -80,22 +82,22 @@ def validarInteger(x, decimales = False):
 				x = input()
 		print("\nOperacion cancelada\n")
 
+
 # Metodo que recoge una cadena y comprueba que contenga las caracteristicas de un DNI
 def validarDNI(dni):
-	contador = 0
-	pat = re.compile("[0-9]{8}[A-Z]")	# Patron establecido a cumplirse (8 numeros de 0 a 9 y una sola letra mayuscula de la A a la Z)
-	mat = pat.match(dni)				# variable que comprueba si hay "Match" con el patron anteriormente establecido
+	for attempt in range(5):
+		pattern = re.compile("[0-9]{8}[A-Z]")	# Patron establecido a cumplirse (8 numeros de 0 a 9 y una sola letra mayuscula de la A a la Z)
+		match = pattern.match(dni)				# variable que comprueba si hay "Match" con el patron anteriormente establecido
 
-	while(not mat): # En caso de error:
-		print("\nFormato de DNI no valido. Pruebe con 8 numeros y una letra")
-		newStr = str(input())	# Pedimos otra cadena para comprobarla nuevamente
-		dni = newStr.strip()	# eliminamos los posibles campos vacios
-		mat = pat.match(dni)	# Comprobamos de nuevo
-		contador += 1
-		if (contador == 5):		# en caso de fallar 5 veces, cancelamos la operacion
-			return
+		if not match:
+			print("\nFormato de DNI no valido. Pruebe con 8 numeros y una letra")
+			newStr = str(input())		# Pedimos otra cadena para comprobarla nuevamente
+			dni = newStr.strip()		# eliminamos los posibles campos vacios
+			match = pattern.match(dni)	# Comprobamos de nuevo
+		else:
+			return dni
 
-	return dni
+
 """
 Metodo que comprueba que, dada una cantidad demandada, y un stock existente, el stock nunca sea menor que 0
 Una vez validada, retornamos la cantidad
@@ -123,6 +125,7 @@ def genIdDisco():
 	if len(raiz[0]) > 0:	# si existen discos, se recoge el valor del ultimo id y se le suma 1
 		idDisco = int(raiz[0][-1].attrib['id']) + 1
 
+
 # Metodo que lee el fichero XML y proporciona un ID a cada Venta
 def genIdVenta():
 	raiz = leerXml(fichero)
@@ -130,6 +133,7 @@ def genIdVenta():
 
 	if len(raiz[1]) > 0:
 		idVenta = int(raiz[1][-1].attrib['id']) + 1
+
 
 # Metodo que devuelve la Fecha y la Hora local
 def setFecha():
@@ -140,6 +144,7 @@ def setFecha():
 
 	return fecha, hora					# retornamos la fecha y la hora formateadas
 
+
 # Metodo de tipo 'bool', que comprueba si existen hijos en nodo/raiz proporcionado por parametro
 def comprobarNodos(raiz):
 	check = raiz.findall('./*') 	# busca todo tipo de etiquetas que partan del nodo proporcionado y lo almacena en 'check'
@@ -148,6 +153,7 @@ def comprobarNodos(raiz):
 		return True
 	else:
 		return False
+
 
 # Metodo de tipo 'bool' destinado a comprobar una seleccion de tipo (S/N)
 def confirmarOperacion():
@@ -159,7 +165,8 @@ def confirmarOperacion():
 			return False
 		else:
 			print("\nOperacion no reconocida")	# de no estar contemplada la respuesta, reiniciamos el bucle
-			
+
+
 """			
 Metodo de tipo 'bool' que dado un diccionario por parametro
 compara si los valores 'Titulo', 'Autor' y 'Ano' ya existen en el fichero XML
@@ -290,7 +297,8 @@ def anadirDisco():
 		else:
 			print("\nDisco ya existente\n")													# Si el disco introducido ya existe, salimos de la funcion
 			return
-				
+
+
 # Metodo mediante el cual eliminamos un 'disco' y sus subelementos del fichero xml
 def eliminarDisco():
 	raiz = leerXml(fichero)					# Obtenemos la raiz del fichero XML (tienda)
@@ -320,6 +328,7 @@ def eliminarDisco():
 
 	else:
 		print("\nActualmente no existen discos almacenados")				# si no existen discos, se notifica
+
 
 # Metodo para modificar los campos de discos ya existentes
 def modificarDisco():
@@ -488,6 +497,7 @@ def modificarDisco():
 		if (not encontrado):											# en caso de seleccionar un disco inexistente
 			print("\nDisco no encontrado")
 
+
 # Metodo que busca y muestra por pantalla un 'disco' con todos sus atributos y elementos
 def buscarDisco():
 	raiz = leerXml(fichero)					# Obtenemos la raiz del fichero XML (tienda)
@@ -518,6 +528,7 @@ def buscarDisco():
 	else:
 		print("\nActualmente no existen discos almacenados")
 
+
 # Metodo para mostrar por pantalla todos los discos almacenados
 def mostrarDiscos():
 	raiz = leerXml(fichero)				# Obtenemos la raiz del fichero XML (tienda)
@@ -536,6 +547,7 @@ def mostrarDiscos():
 					print("\t",data.tag, ": ", data.text)			# si no se llama 'formatos' imprime de manera estandar (nombre: contenido)
 	else:
 		print("\nActualmente no existen discos almacenados")
+
 
 #Metodo que permite modificar el stock de un Disco determinado
 def restockDiscos():
@@ -973,6 +985,7 @@ def nuevaVenta():
 	else:								#En su defecto, notificamos que han de existir discos obligatoriamente
 		print("\nActualmente no existen discos almacenados\nPara realizar una venta, asegurese de que existen Discos disponibles\n")
 
+
 # Metodo para mostrar todas las ventas existentes
 def historialVentas():
 	raiz = leerXml(fichero)					# Obtenemos la raiz del arbol xml
@@ -991,6 +1004,7 @@ def historialVentas():
 					print("\t",data.tag, ": ", data.text)
 	else:									# Si no existen ventas:
 		print("\nActualmente no existen ventas registradas")
+
 
 # Metodo que muestra las opciones dentro del menu discos
 def submenuDiscos():
