@@ -61,26 +61,19 @@ def validarString(string):
 
 # Método que recoge un String, para eliminar caracteres en blanco, y lo convierte a un Integer (POR DEFECTO SI NO SE ESPECIFICA, ES SIN DECIMALES)
 def validarInteger(x, decimales = False):
-	if not decimales:
-		for intento in range(5):
-			y = x.strip()	# eliminamos los posibles espacios vacios al inicio y final
-			try:
+	for intento in range(5):
+		y = x.strip()	# eliminamos los posibles espacios vacios al inicio y final
+		try:
+			if not decimales:
 				z = int(y)	# tratamos de castear el valor proporcionado a la variable 'z'
 				return z	# de ser posible, se retorna la variable 'z'
-			except ValueError:
-				print("\nEntrada no valida: introduzca exclusivamente numeros entre 0 y 9:\n")
-				x = input()	# de no serlo, volvemos a pedir una cifra
-		print("\nOperacion cancelada\n")
-	else:
-		for intento in range(5):
-			y = x.strip()
-			try:
+			else:
 				z = float(y)
 				return z
-			except ValueError:
-				print("\nEntrada no valida: introduzca exclusivamente numeros entre 0 y 9: (en caso de necesitar decimales, recuerde utilizar '.')\n")
-				x = input()
-		print("\nOperacion cancelada\n")
+		except ValueError:
+			print("\nEntrada no valida: introduzca exclusivamente numeros entre 0 y 9:\n")
+			x = input()	# de no serlo, volvemos a pedir una cifra
+	print("\nOperacion cancelada\n")
 
 
 # Metodo que recoge una cadena y comprueba que contenga las caracteristicas de un DNI
